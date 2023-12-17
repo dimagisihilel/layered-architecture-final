@@ -7,7 +7,9 @@ import com.example.layeredarchitecture.view.tdm.ItemTM;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class ItemDAOImpl {
+public class ItemDAOImpl implements ItemDAO{
+
+    @Override
     public ArrayList<ItemDTO> getAllItem() throws SQLException, ClassNotFoundException {
        Connection connection = DBConnection.getDbConnection().getConnection();
        Statement stm = connection.createStatement();
@@ -22,6 +24,7 @@ public class ItemDAOImpl {
         return getAllItem;
     }
 
+    @Override
     public boolean saveItem(ItemDTO dto) throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getDbConnection().getConnection();
         PreparedStatement pstm = connection.prepareStatement("INSERT INTO Item (code, description, unitPrice, qtyOnHand) VALUES (?,?,?,?)");
@@ -31,7 +34,7 @@ public class ItemDAOImpl {
         pstm.setInt(4, dto.getQtyOnHand());
         return pstm.executeUpdate()>0;
     }
-
+    @Override
     public void updateItem(ItemDTO dto) throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getDbConnection().getConnection();
         PreparedStatement pstm = connection.prepareStatement("UPDATE Item SET description=?, unitPrice=?, qtyOnHand=? WHERE code=?");
@@ -42,6 +45,7 @@ public class ItemDAOImpl {
         pstm.executeUpdate();
     }
 
+    @Override
     public void deleteItem(String id) throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getDbConnection().getConnection();
         PreparedStatement pstm = connection.prepareStatement("DELETE FROM Item WHERE code=?");
@@ -49,7 +53,7 @@ public class ItemDAOImpl {
         pstm.executeUpdate();
     }
 
-
+    @Override
     public boolean existItem(String code) throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getDbConnection().getConnection();
         PreparedStatement pstm = connection.prepareStatement("SELECT code FROM Item WHERE code=?");

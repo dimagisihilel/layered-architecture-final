@@ -1,6 +1,7 @@
 package com.example.layeredarchitecture.controller;
 
 import com.example.layeredarchitecture.dao.CustomerDAOImpl;
+import com.example.layeredarchitecture.dao.ItemDAO;
 import com.example.layeredarchitecture.dao.ItemDAOImpl;
 import com.example.layeredarchitecture.db.DBConnection;
 import com.example.layeredarchitecture.model.ItemDTO;
@@ -37,6 +38,7 @@ public class ManageItemsFormController {
     public TableView<ItemTM> tblItems;
     public TextField txtUnitPrice;
     public JFXButton btnAddNewItem;
+    ItemDAO itemDAO = new ItemDAOImpl();
 
     public void initialize() {
         tblItems.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("code"));
@@ -71,7 +73,6 @@ public class ManageItemsFormController {
     private void loadAllItems() {
         tblItems.getItems().clear();
         try {
-            ItemDAOImpl itemDAO = new ItemDAOImpl();
             ArrayList<ItemDTO> allitem = itemDAO.getAllItem();
             for (ItemDTO itemDto : allitem) {
                 tblItems.getItems().add(new ItemTM(itemDto.getCode(),itemDto.getDescription(),itemDto.getUnitPrice(),itemDto.getQtyOnHand()));
@@ -144,7 +145,6 @@ public class ManageItemsFormController {
             pstm.setString(1, code);
             pstm.executeUpdate();*/
 
-            ItemDAOImpl itemDAO = new ItemDAOImpl();
             itemDAO.deleteItem(code);
 
             tblItems.getItems().remove(tblItems.getSelectionModel().getSelectedItem());
@@ -194,7 +194,7 @@ public class ManageItemsFormController {
                 pstm.executeUpdate();
                 tblItems.getItems().add(new ItemTM(code, description, unitPrice, qtyOnHand));*/
 
-                ItemDAOImpl itemDAO = new ItemDAOImpl();
+
                 ItemDTO itemDTO = new ItemDTO(code,description,unitPrice,qtyOnHand);
                 boolean isSaved = itemDAO.saveItem(itemDTO);
                 if(isSaved){
@@ -221,7 +221,7 @@ public class ManageItemsFormController {
                 pstm.setInt(3, qtyOnHand);
                 pstm.setString(4, code);
                 pstm.executeUpdate();*/
-                ItemDAOImpl itemDAO = new ItemDAOImpl();
+
                 ItemDTO itemDTO = new ItemDTO();
                 itemDAO.updateItem(itemDTO);
 
@@ -247,7 +247,7 @@ public class ManageItemsFormController {
         PreparedStatement pstm = connection.prepareStatement("SELECT code FROM Item WHERE code=?");
         pstm.setString(1, code);
         return pstm.executeQuery().next();*/
-        ItemDAOImpl itemDAO = new ItemDAOImpl();
+
         boolean isExist = itemDAO.existItem(code);
         return isExist;
     }
