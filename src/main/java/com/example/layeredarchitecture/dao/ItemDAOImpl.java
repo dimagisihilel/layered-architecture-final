@@ -76,7 +76,21 @@ public class ItemDAOImpl implements ItemDAO{
         return searchItem;
     }
 
-    /*public String generateNewId() throws SQLException, ClassNotFoundException {
+    @Override
+    public ArrayList<ItemDTO>getAllItemIds() throws SQLException, ClassNotFoundException {
+        Connection connection = DBConnection.getDbConnection().getConnection();
+            Statement stm = connection.createStatement();
+            ResultSet rst = stm.executeQuery("SELECT * FROM Item");
+            ArrayList<ItemDTO> getAllItemIds = new ArrayList<>();
+
+        while (rst.next()) {
+            ItemDTO itemDTO = new ItemDTO(rst.getString("code"), rst.getString("description"), rst.getBigDecimal("unitPrice"), rst.getInt("qtyOnHand"));
+            getAllItemIds.add(itemDTO);
+        }
+        return getAllItemIds;
+    }
+
+    public String generateNewId() throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getDbConnection().getConnection();
             ResultSet rst = connection.createStatement().executeQuery("SELECT code FROM Item ORDER BY code DESC LIMIT 1;");
             if (rst.next()) {
@@ -86,5 +100,5 @@ public class ItemDAOImpl implements ItemDAO{
             } else {
                 return "I00-001";
             }
-    }*/
+    }
 }

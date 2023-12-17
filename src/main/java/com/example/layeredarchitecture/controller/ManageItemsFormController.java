@@ -254,9 +254,8 @@ public class ManageItemsFormController {
 
 
     private String generateNewId() {
-        //String id = null;
         try {
-            Connection connection = DBConnection.getDbConnection().getConnection();
+            /*Connection connection = DBConnection.getDbConnection().getConnection();
             ResultSet rst = connection.createStatement().executeQuery("SELECT code FROM Item ORDER BY code DESC LIMIT 1;");
             if (rst.next()) {
                 String id = rst.getString("code");
@@ -264,10 +263,10 @@ public class ManageItemsFormController {
                 return String.format("I00-%03d", newItemId);
             } else {
                 return "I00-001";
-            }
+            }*/
+            String id = itemDAO.generateNewId();
+            return  id;
 
-            /*ItemDAOImpl itemDAO = new ItemDAOImpl();
-            id = itemDAO.generateNewId();*/
 
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
