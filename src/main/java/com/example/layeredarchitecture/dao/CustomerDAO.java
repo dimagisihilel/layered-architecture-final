@@ -18,6 +18,5 @@ public interface CustomerDAO {
 
       ArrayList<CustomerDTO> searchCustomer(String id) throws SQLException, ClassNotFoundException ;
 
-
-
+      ArrayList<CustomerDTO> getAllCustomerIds() throws SQLException, ClassNotFoundException;
 }
