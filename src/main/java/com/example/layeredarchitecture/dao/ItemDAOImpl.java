@@ -1,6 +1,7 @@
 package com.example.layeredarchitecture.dao;
 
 import com.example.layeredarchitecture.db.DBConnection;
+import com.example.layeredarchitecture.model.CustomerDTO;
 import com.example.layeredarchitecture.model.ItemDTO;
 import com.example.layeredarchitecture.view.tdm.ItemTM;
 
@@ -59,6 +60,20 @@ public class ItemDAOImpl implements ItemDAO{
         PreparedStatement pstm = connection.prepareStatement("SELECT code FROM Item WHERE code=?");
         pstm.setString(1, code);
         return pstm.executeQuery().next();
+    }
+
+    @Override
+    public ArrayList<ItemDTO> searchItem(String id) throws SQLException, ClassNotFoundException {
+        Connection connection = DBConnection.getDbConnection().getConnection();
+        PreparedStatement pstm = connection.prepareStatement("SELECT * FROM Item WHERE code=?");
+        pstm.setString(1,  id);
+        ResultSet rst = pstm.executeQuery();
+        ArrayList<ItemDTO> searchItem = new ArrayList<>();
+        while (rst.next()){
+            ItemDTO itemDTO = new ItemDTO(rst.getString("code"), rst.getString("description"), rst.getBigDecimal("unitPrice"), rst.getInt("qtyOnHand"));
+            searchItem.add(itemDTO);
+        }
+        return searchItem;
     }
 
     /*public String generateNewId() throws SQLException, ClassNotFoundException {
