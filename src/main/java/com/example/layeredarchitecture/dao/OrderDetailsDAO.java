@@ -1,0 +1,11 @@
+package com.example.layeredarchitecture.dao;
+
+import com.example.layeredarchitecture.model.OrderDetailDTO;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
+
+public interface OrderDetailsDAO {
+     boolean saveOrderDetail(String orderId, List<OrderDetailDTO> orderDetails, Connection connection) throws SQLException, ClassNotFoundException;
+}

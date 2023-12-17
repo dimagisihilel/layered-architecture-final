@@ -89,7 +89,7 @@ public class ItemDAOImpl implements ItemDAO{
         }
         return getAllItemIds;
     }
-
+    @Override
     public String generateNewId() throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getDbConnection().getConnection();
             ResultSet rst = connection.createStatement().executeQuery("SELECT code FROM Item ORDER BY code DESC LIMIT 1;");
@@ -101,4 +101,36 @@ public class ItemDAOImpl implements ItemDAO{
                 return "I00-001";
             }
     }
+    @Override
+    public ItemDTO findItem(String newItemCode) throws SQLException, ClassNotFoundException {
+        Connection connection = DBConnection.getDbConnection().getConnection();
+        PreparedStatement pstm = connection.prepareStatement("SELECT * FROM Item WHERE code=?");
+        pstm.setString(1, newItemCode + "");
+        ResultSet rst = pstm.executeQuery();
+        rst.next();
+        ItemDTO item = new ItemDTO(newItemCode + "", rst.getString("description"), rst.getBigDecimal("unitPrice"), rst.getInt("qtyOnHand"));
+
+        return item;
+    }
+    @Override
+    public boolean updateItemqty(ItemDTO itemDTO, Connection connection) throws SQLException, ClassNotFoundException {
+
+        PreparedStatement pstm = connection.prepareStatement("UPDATE Item SET description=?, unitPrice=?, qtyOnHand=? WHERE code=?");
+        pstm.setString(1, itemDTO.getDescription());
+        pstm.setBigDecimal(2, itemDTO.getUnitPrice());
+        pstm.setInt(3, itemDTO.getQtyOnHand());
+        pstm.setString(4, itemDTO.getCode());
+
+
+        if (!(pstm.executeUpdate() > 0)) {
+            connection.rollback();
+            connection.setAutoCommit(true);
+            return false;
+        } else {
+            connection.commit();
+            connection.setAutoCommit(false); //methana mam false kala
+            return true;
+        }
+    }
+
 }

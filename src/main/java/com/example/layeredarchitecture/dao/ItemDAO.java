@@ -17,4 +17,6 @@ public interface ItemDAO {
      String generateNewId() throws SQLException, ClassNotFoundException;
       ArrayList<ItemDTO> searchItem(String id) throws SQLException, ClassNotFoundException;
       ArrayList<ItemDTO>getAllItemIds() throws SQLException, ClassNotFoundException;
+     boolean updateItemqty(ItemDTO itemDTO, Connection connection) throws SQLException, ClassNotFoundException;
+     ItemDTO findItem(String newItemCode) throws SQLException, ClassNotFoundException;
 }
